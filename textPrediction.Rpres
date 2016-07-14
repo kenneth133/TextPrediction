@@ -1,0 +1,44 @@
+Text Prediction
+========================================================
+author: Kenneth Lee
+date: July 13, 2016
+
+Training the Algorithm
+========================================================
+
+Starting with a corpus provided by SwiftKey consisting of text from blogs, news articles, and twitter feeds:
+
+- Sample 40,000 lines from each of the three text files.
+- Separate each line into sentences. For each sentence, make all lower case, remove numbers, punctuation, and extra whitespace.
+- Stopword removal and word stemming were intentionally not performed.  For the purpose of predicting words, such processing would have been counterproductive.
+- Build frequency tables of bigrams, trigrams, and fourgrams.
+- From there, build probability tables of the nth word for bigrams, trigrams, and fourgrams.
+- Packages used: data.table, dplyr, ngram, qdap
+
+Algorithm Objectives and Usage Instructions
+========================================================
+
+The algorithm has one of two objectives depending on the input string:    
+1. If the last character in the input string is a space, predict the next word.    
+2. If the last character is not a space, predict or correct the last partial (or full) word.    
+
+The algorithm:
+- Will return its top three predictions of the next or last word.
+- Is intended to mimic the behavior of text prediction algorithms on modern smartphones.
+
+Algorithm Logic
+========================================================
+
+- Step 1: The algorithm begins by searching fourgrams and returning the likeliest occurring next words.  If less than 3 are found, it will backoff to trigrams.  If less than 3 total are found, it will backoff to bigrams.
+- Step 2: If algorithm has found less than 3 word predictions, run spelling correction on the preceding words then run step 1 again.
+- Step 3: In the case where the algorithm is predicting the last word in the input string and it has found less than 3 word predictions, run spelling correction on the last word of the input string.
+- Packages used: data.table, hunspell, ngram
+
+Next Steps and Practical Applications
+========================================================
+
+- Adding logic to the algorithm to account for words in the beginning of the sentence should improve results by giving the algorithm additional context beyond the last four words.
+- Going further, we may be able to add logic to account for context from preceding sentences.
+- With enough development resources (time, money, staff), this algorithm can be extended far beyond predicting text on a smartphone to applications such as writing web content for example: descriptions of upcoming weather events or summaries of sports events.
+- Maybe in the future the algorithm can write a novel.
+- Dare to dream!
